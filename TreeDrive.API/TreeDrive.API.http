@@ -1,0 +1,6 @@
+@TreeDrive.API_HostAddress = http://localhost:5094
+
+GET {{TreeDrive.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

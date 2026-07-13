@@ -1,0 +1,66 @@
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:latest
+    container_name: treedrive_mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: TreeDrive
+    networks:
+      - treedrive_network
+
+  # Backend API
+
+  backend:
+    build:
+      context: .
+      dockerfile: TreeDrive.API/Dockerfile
+    container_name: treedrive_backend
+    restart: always
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongodb
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:5000
+      - MongoDB__ConnectionString=mongodb://admin:password123@mongodb:27017
+      - MongoDB__DatabaseName=TreeDrive
+      - FileStorage__Path=/app/server_files
+      - Jwt__Secret=YourSuperSecretKeyForProduction1234567890!
+      - Jwt__Issuer=TreeDrive
+      - Jwt__Audience=TreeDriveUsers
+    volumes:
+      - file_storage:/app/server_files
+    networks:
+      - treedrive_network
+
+  # Frontend (optional - comment out if you want to run frontend separately)
+  frontend:
+    build:
+      context: ./TreeDrive.Frontend
+      dockerfile: Dockerfile
+    container_name: treedrive_frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - treedrive_network
+
+# Volumes for persistent data
+volumes:
+  mongodb_data:
+  file_storage:
+
+# Networks
+networks:
+  treedrive_network:
+    driver: bridge

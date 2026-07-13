@@ -1,0 +1,10 @@
+<Solution>
+  <Project Path="TreeDrive.API.Tests/TreeDrive.API.Tests.csproj" />
+  <Project Path="TreeDrive.API/TreeDrive.API.csproj" />
+  <Project Path="TreeDrive.Core/TreeDrive.Core.csproj" />
+  <Project Path="TreeDrive.FileService/TreeDrive.FileService.csproj" />
+  <Project Path="TreeDrive.Infrastructure.Tests/TreeDrive.Infrastructure.Tests.csproj" />
+  <Project Path="TreeDrive.Infrastructure/TreeDrive.Infrastructure.csproj" />
+  <Project Path="TreeDrive.Integration.Tests/TreeDrive.Integration.Tests.csproj" />
+  <Project Path="TreeDrive.Shared/TreeDrive.Shared.csproj" />
+</Solution>

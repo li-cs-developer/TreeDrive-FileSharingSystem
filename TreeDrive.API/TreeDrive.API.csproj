@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Remove Swashbuckle completely -->
+    <!-- <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" /> -->
+    
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.0" />
+    <PackageReference Include="MongoDB.Bson" Version="3.9.0" />
+    <PackageReference Include="MongoDB.Driver" Version="3.9.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.3" />
+    <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TreeDrive.Core\TreeDrive.Core.csproj" />
+    <ProjectReference Include="..\TreeDrive.FileService\TreeDrive.FileService.csproj" />
+    <ProjectReference Include="..\TreeDrive.Infrastructure\TreeDrive.Infrastructure.csproj" />
+    <ProjectReference Include="..\TreeDrive.Shared\TreeDrive.Shared.csproj" />
+  </ItemGroup>
+
+</Project>
