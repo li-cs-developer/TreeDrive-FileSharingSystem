@@ -3,7 +3,7 @@
 **TreeDrive** is a secure, full-stack file sharing platform that enables users to upload, download, and share files with specific users. Built using a decoupled, testable architecture, it addresses multi-tenant file sharing challenges by enforcing strict data isolation and granular cryptographic security at the API level.
 
 <p align="center">
-  <video src="https://github.com/user-attachments/assets/702436a8-f2d8-47be-8fae-99d5249cde0c" width="100%" controls autoplay loop muted></video>
+  <video src="https://github.com/user-attachments/assets/afb61a9f-8ebb-4915-907e-dd13e3fb7a45" width="100%" controls autoplay loop muted></video>
 </p>
 
 ---
