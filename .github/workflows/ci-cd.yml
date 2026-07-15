@@ -48,14 +48,14 @@ jobs:
       with:
         node-version: ${{ env.NODE_VERSION }}
         cache: 'npm'
-        cache-dependency-path: TreeDrive.Frontend/package-lock.json
+        cache-dependency-path: frontend/TreeDrive.Frontend/package-lock.json  
     
     - name: Install dependencies
       run: |
-        cd TreeDrive.Frontend
-        npm install
+        cd frontend/TreeDrive.Frontend
+        npm ci
     
     - name: Build
       run: |
-        cd TreeDrive.Frontend
+        cd frontend/TreeDrive.Frontend
         npm run build
