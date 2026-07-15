@@ -1,66 +1,95 @@
 services:
-  # MongoDB Database
+  # MongoDB
   mongodb:
     image: mongo:latest
-    container_name: treedrive_mongodb
-    restart: always
+    container_name: treedrive-mongodb
     ports:
       - "27017:27017"
     volumes:
       - mongodb_data:/data/db
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: password123
-      MONGO_INITDB_DATABASE: TreeDrive
     networks:
-      - treedrive_network
+      - treedrive-network
 
-  # Backend API
-
-  backend:
+  # Auth Service
+  auth-service:
     build:
       context: .
-      dockerfile: TreeDrive.API/Dockerfile
-    container_name: treedrive_backend
-    restart: always
+      dockerfile: backend/services/auth-service/Dockerfile
+    container_name: treedrive-auth
     ports:
-      - "5000:5000"
+      - "5001:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - MongoDB__ConnectionString=mongodb://mongodb:27017
+      - Jwt__Secret=SuperSecretKey123!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ123456
     depends_on:
       - mongodb
+    networks:
+      - treedrive-network
+
+  # File Service
+  file-service:
+    build:
+      context: .
+      dockerfile: backend/services/file-service/Dockerfile
+    container_name: treedrive-file
+    ports:
+      - "5002:80"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-      - ASPNETCORE_URLS=http://+:5000
-      - MongoDB__ConnectionString=mongodb://admin:password123@mongodb:27017
-      - MongoDB__DatabaseName=TreeDrive
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - MongoDB__ConnectionString=mongodb://mongodb:27017
+      - Jwt__Secret=SuperSecretKey123!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ123456
       - FileStorage__Path=/app/server_files
-      - Jwt__Secret=YourSuperSecretKeyForProduction1234567890!
-      - Jwt__Issuer=TreeDrive
-      - Jwt__Audience=TreeDriveUsers
+    depends_on:
+      - mongodb
+    networks:
+      - treedrive-network
     volumes:
       - file_storage:/app/server_files
-    networks:
-      - treedrive_network
 
-  # Frontend (optional - comment out if you want to run frontend separately)
+  # API Gateway
+  api-gateway:
+    build:
+      context: .
+      dockerfile: backend/services/api-gateway/Dockerfile
+    container_name: treedrive-gateway
+    ports:
+      - "5000:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - Services__AuthService=http://auth-service:80
+      - Services__FileService=http://file-service:80
+    depends_on:
+      - auth-service
+      - file-service
+    networks:
+      - treedrive-network
+
+  # ✅ Frontend (React)
   frontend:
     build:
-      context: ./TreeDrive.Frontend
+      context: ./frontend/TreeDrive.Frontend
       dockerfile: Dockerfile
-    container_name: treedrive_frontend
-    restart: always
+    container_name: treedrive-frontend
     ports:
-      - "80:80"
+      - "5173:80"
+    volumes:
+      - ./frontend/TreeDrive.Frontend:/app  # Mount code
+      - /app/node_modules                     # Exclude node_modules
     depends_on:
-      - backend
+      - api-gateway
     networks:
-      - treedrive_network
+      - treedrive-network
+    environment:
+      - VITE_API_URL=http://api-gateway:80
 
-# Volumes for persistent data
+networks:
+  treedrive-network:
+    driver: bridge
+
 volumes:
   mongodb_data:
   file_storage:
-
-# Networks
-networks:
-  treedrive_network:
-    driver: bridge

@@ -8,7 +8,7 @@ on:
 
 env:
   DOTNET_VERSION: '10.0.x'
-  NODE_VERSION: '20.x'
+  NODE_VERSION: '24.x'
 
 jobs:
   test-backend:
@@ -28,14 +28,23 @@ jobs:
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
     
+    - name: Build Auth Service image
+      run: docker build -f backend/services/auth-service/Dockerfile -t treedrive-auth-service:latest .
+    
+    - name: Build File Service image
+      run: docker build -f backend/services/file-service/Dockerfile -t treedrive-file-service:latest .
+    
+    - name: Verify Docker images
+      run: docker images | grep treedrive
+    
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore backend/TreeDrive.Backend.slnx  
     
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build backend/TreeDrive.Backend.slnx --no-restore 
     
     - name: Run Unit Tests
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test backend/TreeDrive.Backend.slnx --no-build --verbosity normal  
 
   test-frontend:
     runs-on: ubuntu-latest
@@ -48,14 +57,17 @@ jobs:
       with:
         node-version: ${{ env.NODE_VERSION }}
         cache: 'npm'
-        cache-dependency-path: TreeDrive.Frontend/package-lock.json
+        cache-dependency-path: frontend/TreeDrive.Frontend/package-lock.json
+
+    - name: Clear npm cache
+      run: npm cache clean --force
     
     - name: Install dependencies
       run: |
-        cd TreeDrive.Frontend
+        cd frontend/TreeDrive.Frontend
         npm install
     
     - name: Build
       run: |
-        cd TreeDrive.Frontend
+        cd frontend/TreeDrive.Frontend
         npm run build
