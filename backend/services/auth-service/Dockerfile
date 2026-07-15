@@ -19,6 +19,10 @@ FROM mcr.microsoft.com/dotnet/aspnet:10.0
 WORKDIR /app
 COPY --from=build /app/publish .
 
+# ✅ Set the port to 5001
+ENV ASPNETCORE_URLS=http://+:5001
+EXPOSE 5001
+
 # ✅ Make sure the Controllers folder is copied
 RUN ls -la /app/
 
