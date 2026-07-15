@@ -28,6 +28,15 @@ jobs:
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
     
+    - name: Build Auth Service image
+      run: docker build -f backend/services/auth-service/Dockerfile -t treedrive-auth-service:latest .
+    
+    - name: Build File Service image
+      run: docker build -f backend/services/file-service/Dockerfile -t treedrive-file-service:latest .
+    
+    - name: Verify Docker images
+      run: docker images | grep treedrive
+    
     - name: Restore dependencies
       run: dotnet restore backend/TreeDrive.Backend.slnx  
     
