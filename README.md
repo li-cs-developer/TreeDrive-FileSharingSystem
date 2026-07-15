@@ -41,7 +41,7 @@ The solution follows a **Microservices Architecture** with an API Gateway patter
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                    Frontend (React + TypeScript)                │
-│                        http://localhost:5173                   │
+│                        http://localhost:5173                    │
 └─────────────────────────────────────────────────────────────────┘
                                 │
                                 ▼
@@ -460,7 +460,7 @@ docker-compose ps
 
 # View all logs
 docker-compose logs --tail=20
----
+```
 
 ## 📄 License
 
