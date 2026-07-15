@@ -1,0 +1,26 @@
+<Solution>
+  <Folder Name="/infrastructure/">
+    <Project Path="infrastructure/TreeDrive.FileStorage/TreeDrive.FileStorage.csproj" />
+    <Project Path="infrastructure/TreeDrive.Infrastructure/TreeDrive.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/services/">
+    <Project Path="services/api-gateway/api-gateway.csproj" />
+  </Folder>
+  <Folder Name="/services/auth-service/">
+    <Project Path="services/auth-service/TreeDrive.AuthService.csproj" />
+  </Folder>
+  <Folder Name="/services/file-service/">
+    <Project Path="services/file-service/TreeDrive.FileService.csproj" />
+  </Folder>
+  <Folder Name="/shared/">
+    <Project Path="shared/TreeDrive.Core/TreeDrive.Core.csproj" />
+    <Project Path="shared/TreeDrive.Shared/TreeDrive.Shared.csproj" />
+  </Folder>
+  <Folder Name="/tests/" />
+  <Folder Name="/tests/integration/">
+    <Project Path="tests/integration/TreeDrive.Integration.Tests/TreeDrive.Integration.Tests.csproj" />
+  </Folder>
+  <Folder Name="/tests/unit/">
+    <Project Path="tests/unit/TreeDrive.Infrastructure.Tests/TreeDrive.Infrastructure.Tests.csproj" />
+  </Folder>
+</Solution>
